@@ -33,7 +33,18 @@ main {
             justify-content: center;
             align-items: center;
             font-size: 34px;
+            padding: 0.5rem;
         }
+        .card:hover {
+            cursor: pointer;
+        }
+            .card img {
+                max-width: 100%;
+                width: 25%;
+            }
+            .invisible {
+                display: none;
+            }
 /*
     #card-grid {
         display: grid;

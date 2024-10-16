@@ -6,30 +6,44 @@ let num = 4;
 let max = ((num * num / 2) + 1);
 let numArr = [];
 let numSet = new Set();
+let imgArr = [
+    "./img/airplane-fill.svg",
+    "./img/alarm-fill.svg",
+    "./img/backpack4-fill.svg",
+    "./img/bag-heart-fill.svg",
+    "./img/balloon-heart-fill.svg",
+    "./img/basket2-fill.svg",
+    "./img/bicycle.svg",
+    "./img/bookmark-fill.svg",
+];
 
 const countOccurrences = (arr, val) =>
     arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
-  
-  countOccurrences([1, 1, 2, 1, 2, 3], 1); // 3
 
-let i = 0;
-for (let col = 0; col < num; col++) {
-    for (let row = 0; row < num; row++) {
-        incrementArray(numArr);
-        let card = document.createElement("div");
-        let cardText = document.createTextNode(numArr[i]);
-        card.setAttribute("class", "card");
-        elCardGrid.appendChild(card);
-        card.appendChild(cardText);
-        i++;
+
+window.addEventListener("load", createCards);
+function createCards() {
+    let counter = 0;
+    for (let col = 0; col < num; col++) {
+        for (let row = 0; row < num; row++) {
+            incrementArray(numArr);
+            let card = document.createElement("div");
+            let cardImg = document.createElement("img");
+            card.classList.add("card");
+            cardImg.setAttribute("src", imgArr[numArr[counter]]);
+            cardImg.classList.add("invisible");
+            card.appendChild(cardImg);
+            card.addEventListener("click", cardClick);
+            elCardGrid.appendChild(card);
+            counter++;
+        }
     }
 }
 
-console.log(numArr);
 
 function incrementArray(arr) {
     while(true) {
-        let randomNum = Math.floor((Math.random() * (max - 1) + 1));
+        let randomNum = Math.floor((Math.random() * (max - 1)));
         if (numSet.size === 8) {
             if (!numSet.has(randomNum)) {
                 continue;
@@ -42,5 +56,32 @@ function incrementArray(arr) {
         } else {
             continue;
         }
+    }
+}
+
+let clickedCounter = 0;
+let firstCard = "";
+
+function cardClick(e) {
+    clickedCounter++
+    if (clickedCounter == 2) {
+        if (checkPair(firstCard, e.currentTarget)) {
+
+        } else {
+            clickedCounter = 0;
+        }
+        
+    }
+    firstCard = e.currentTarget;
+    e.currentTarget.children[0].classList.remove("invisible");
+    console.log(e.currentTarget);
+}
+
+function checkPair(firstCard, secondCard) {
+    if (firstCard.children[0].src === secondCard.children[0].src) {
+        return true;
+    }
+    else {
+        return false;
     }
 }
