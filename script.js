@@ -1,6 +1,8 @@
 "use strict"
 
 const elCardGrid = document.getElementById("card-grid");
+const elStartButton = document.getElementById("start-button");
+const elTimer = document.getElementById("timer");
 
 let num = 4;
 let max = ((num * num / 2) + 1);
@@ -33,7 +35,6 @@ function createCards() {
             cardImg.setAttribute("src", imgArr[numArr[counter]]);
             cardImg.classList.add("invisible");
             card.appendChild(cardImg);
-            card.addEventListener("click", cardClick);
             elCardGrid.appendChild(card);
             counter++;
         }
@@ -58,6 +59,34 @@ function incrementArray(arr) {
         }
     }
 }
+
+let game = {
+    timeStart: false,
+    card1: "",
+    card2: "",
+    startGame() {
+        console.log("Game Started!");
+        this.timeStart = true;
+        console.time();
+        game.eventHandlers();
+    },    
+    eventHandlers() {
+        let cardList = document.querySelectorAll(".card");
+        cardList.forEach((el) => el.addEventListener("click", cardClicked));
+        console.log(cardList);
+    },
+    cardClicked() {
+
+    },
+    endGame() {
+        console.log("Game ended");
+        this.timeStart = false;
+        console.timeEnd();
+    },
+}
+
+elStartButton.addEventListener("click", game.startGame);
+
 
 let clickedCounter = 0;
 let firstCard = "";
