@@ -8,14 +8,19 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="game-container">
+    <div id="game-container">
         <div id="extra-flex">
-            <p id="timer">00s</p>
+            <p id="timer">0s</p>
             <button id="start-button">Start Game</button>
         </div>
-        <div id="card-grid">
+        <div id="card-grid"></div>
     </div>
 
+    <div id="victory-screen" class="invisible">
+        <h1>You won!!</h1>
+        <h2 id="total-time"></h2>
+        <h2 id="total-moves"></h2>
+        <button id="play-again">Play Again</button>
     </div>
 </body>
 </html>

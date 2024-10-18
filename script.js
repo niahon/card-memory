@@ -1,9 +1,18 @@
 "use strict"
 
+/* Game elements */
+const elGameContainer = document.getElementById("game-container");
 const elCardGrid = document.getElementById("card-grid");
 const elStartButton = document.getElementById("start-button");
 const elTimer = document.getElementById("timer");
 
+/* Victory screen elements */
+const elVictoryScreen = document.getElementById("victory-screen");
+const elTotalTime = document.getElementById("total-time");
+const elTotalMoves = document.getElementById("total-moves");
+const elPlayAgain = document.getElementById("play-again");
+
+/* Variables for creating the card grid*/
 let numberOfCards = 4;
 let max = ((numberOfCards * numberOfCards / 2) + 1);
 let numArr = [];
@@ -19,9 +28,9 @@ let imgArr = [
     "./img/bookmark-fill.svg",
 ];
 
+// Creating the card grid
 const countOccurrences = (arr, val) =>
     arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
-
 
 window.addEventListener("load", createCards);
 function createCards() {
@@ -41,7 +50,6 @@ function createCards() {
     }
 }
 
-
 function incrementArray(arr) {
     while(true) {
         let randomNum = Math.floor((Math.random() * (max - 1)));
@@ -60,17 +68,47 @@ function incrementArray(arr) {
     }
 }
 
+// Handles all game functionality
 let game = {
-    timeStart: false,
+    gameStart: false,
     card1: "",
     card2: "",
     points: 0,
+    moves: 0,
+    seconds: 0,
+    setupGame() {
+        console.log(this);
+        elGameContainer.classList.remove("invisible");
+        elVictoryScreen.classList.add("invisible");
+        for (let i = 0; i < elCardGrid.children.length; i++) {
+            elCardGrid.children[i].children[0].classList.add("invisible");
+       }
+        game.points = 0;
+        game.moves = 0;
+        game.seconds = 0;
+        elTimer.textContent = "0s";
+    },
     startGame() {
+        if (game.gameStart === true) {
+            return;
+        }
+        game.gameStart = true;
+        console.log(elCardGrid.children);
         console.log("Game Started!");
-        this.timeStart = true;
-        console.time();
+        game.timeGame();
         game.eventHandlers();
     },    
+    timeGame() {
+        let timer = setInterval(() => {
+            this.seconds++;
+            elTimer.textContent = `${this.seconds}s`;
+            if (this.gameStart === false) {
+                console.log('puts');
+                clearInterval(timer);
+            }
+        }, 1000)
+        elTimer
+    },
     eventHandlers() {
         let cardList = document.querySelectorAll(".card");
         cardList.forEach((el) => el.addEventListener("click", this.cardClicked));
@@ -84,13 +122,15 @@ let game = {
             game.card1 = this;
             img.classList.remove("invisible");
         } else {
-            game.card2 = this;
-            img.classList.remove("invisible");
-            game.checkPair(game.card1, game.card2);
+            if (this !== game.card1) {
+                game.card2 = this;
+                img.classList.remove("invisible");
+                game.checkPair(game.card1, game.card2);
+            }
         }
     },
     checkPair(card1, card2) {
-        console.log(this);
+        this.moves++;
         if (card1.children[0].src === card2.children[0].src) {
             card1.removeEventListener("click", this.cardClicked);
             card2.removeEventListener("click", this.cardClicked);
@@ -99,53 +139,28 @@ let game = {
             setTimeout(() => {
                 card1.children[0].classList.add("invisible");
                 card2.children[0].classList.add("invisible"); 
-            }, 350);
+            }, 300);
         }
         setTimeout(() => {
             this.card1 = "";
             this.card2 = "";
-        }, 350);
+        }, 300);
         
     },
     pointHandler() {
         this.points++;
         if (this.points === ((numberOfCards ** 2) / 2)) {
-            this.endGame();
+            this.gameEnd();
         }
     },
-    endGame() {
-        console.log("Game ended");
-        this.timeStart = false;
-        console.timeEnd();
+    gameEnd() {
+        this.gameStart = false;
+        elGameContainer.classList.add("invisible");
+        elVictoryScreen.classList.remove("invisible");
+        elTotalTime.textContent = `Total time: ${this.seconds} seconds`;
+        elTotalMoves.textContent = `Total moves: ${this.moves}`;
     },
 }
 
 elStartButton.addEventListener("click", game.startGame);
-
-
-let clickedCounter = 0;
-let firstCard = "";
-
-function cardClick(e) {
-    clickedCounter++
-    if (clickedCounter == 2) {
-        if (checkPair(firstCard, e.currentTarget)) {
-
-        } else {
-            clickedCounter = 0;
-        }
-        
-    }
-    firstCard = e.currentTarget;
-    e.currentTarget.children[0].classList.remove("invisible");
-    console.log(e.currentTarget);
-}
-
-function checkPair(firstCard, secondCard) {
-    if (firstCard.children[0].src === secondCard.children[0].src) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
+elPlayAgain.addEventListener("click", game.setupGame);
