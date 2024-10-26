@@ -18,17 +18,27 @@ button {
 
 body {
     background-color: rgb(6, 88, 16);
+    background-image: url("img/suits\(3\).png");
+
+    background-size: 25%;
 }
 
 #game-container {
     margin: 0 auto;
-    width: 50%;
+    width: 55%;
+    background-color: rgba(56, 8, 53, 0.9);
 }
     #extra-flex {
         display: flex;
         margin: 0.5rem 0;
+        padding: 0.5rem 2rem;
         justify-content: space-between;
+        border-bottom: 2px solid blue;
     }
+        #timer {
+            color: white;
+            font-size: 22px;
+        }
     #card-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -37,8 +47,8 @@ body {
         padding: 1rem;
     }
         .card {
-            width: 105px;
-            height: 120px;
+            width: 80px;
+            height: 100px;
             border: 8px double red;
             background-color: white;
             display: flex;
@@ -52,7 +62,7 @@ body {
         }
             .card img {
                 max-width: 100%;
-                width: 25%;
+                width: 40%;
             }
 
 #victory-screen {
