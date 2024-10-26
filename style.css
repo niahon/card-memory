@@ -16,6 +16,10 @@ button {
     color: white;
 }
 
+body {
+    background-color: rgb(6, 88, 16);
+}
+
 #game-container {
     margin: 0 auto;
     width: 50%;
@@ -27,16 +31,16 @@ button {
     }
     #card-grid {
         display: grid;
-        background-color: blue;
         grid-template-columns: repeat(4, 1fr);
         gap: 0.5rem;
         place-items: center;
         padding: 1rem;
     }
         .card {
-            width: 125px;
-            height: 140px;
-            background-color: red;
+            width: 105px;
+            height: 120px;
+            border: 8px double red;
+            background-color: white;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -50,15 +54,12 @@ button {
                 max-width: 100%;
                 width: 25%;
             }
-            .invisible {
-                display: none;
-            }
+
 #victory-screen {
     background-color: red;
     width: 50%;
     margin: 4rem auto;
     border-radius: 1rem;
-    display: flex;
     flex-direction: column;
     align-items: center;
 
@@ -72,4 +73,11 @@ button {
 }
     #play-again {
         margin: 0.5rem;
-    }
+    }            
+ 
+.flex {
+    display: flex;
+}
+.invisible {
+    display: none;
+}
