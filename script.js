@@ -5,13 +5,16 @@ const elGameContainer = document.getElementById("game-container");
 const elCardGrid = document.getElementById("card-grid");
 const elStartButton = document.getElementById("start-button");
 const elTimer = document.getElementById("timer");
+const elDifficultySelector = document.getElementById("difficulty-selector");
 
 /* Victory screen elements */
 const elVictoryScreen = document.getElementById("victory-screen");
+const elRoundResult = document.getElementById("round-result");
 const elTime = document.getElementById("time");
 const elBestTime = document.getElementById("best-time");
 const elNumberOfMoves = document.getElementById("moves-number");
 const elTotalWins = document.getElementById("total-wins");
+const elTotalLosses = document.getElementById("total-losses");
 const elPlayAgain = document.getElementById("play-again");
 
 /* Variables for creating the card grid*/
@@ -77,11 +80,15 @@ let game = {
     card2: "",
     points: 0,
     moves: 0,
-    seconds: 0,
     wins: 0,
+    losses: 0,
+    maxTime: 60,
+    totalTime: 0,
     bestTime: 0,
+    roundState: '',
     setupGame() {
         console.log(this);
+        this.roundState = '';
         elGameContainer.classList.remove("invisible");
         elVictoryScreen.classList.add("invisible");
         for (let i = 0; i < elCardGrid.children.length; i++) {
@@ -89,7 +96,7 @@ let game = {
        }
         game.points = 0;
         game.moves = 0;
-        game.seconds = 0;
+        game.totalTime = 0;
         elTimer.textContent = "0s";
     },
     startGame() {
@@ -104,8 +111,13 @@ let game = {
     },    
     timeGame() {
         let timer = setInterval(() => {
-            this.seconds++;
-            elTimer.textContent = `${this.seconds}s`;
+            this.totalTime++;
+            elTimer.textContent = `${this.totalTime}s`;
+            if (this.totalTime >= this.maxTime) {
+                console.log("YOU LOSE!");
+                this.roundState = "loss";
+                this.gameEnd(); 
+            }
             if (this.gameStart === false) {
                 clearInterval(timer);
             }
@@ -158,20 +170,34 @@ let game = {
     },
     updateBestTime() {
         console.log("test");
-        if (this.bestTime === 0 || this.bestTime > this.seconds) {
-            this.bestTime = this.seconds;
+        if (this.bestTime === 0 || this.bestTime > this.totalTime) {
+            this.bestTime = this.totalTime;
         }
     },
     gameEnd() {
         this.gameStart = false;
-        this.updateBestTime();
-        this.wins++;
+        if (this.roundState === 'loss') {
+            this.losses++;
+            elTime.classList.add("invisible");
+            elRoundResult.textContent = "You lose...";
+        } else {
+            this.wins++;
+            this.updateBestTime();
+            elTime.textContent = `Latest Time: ${this.totalTime} seconds`;
+            elNumberOfMoves.textContent = `Number of moves: ${this.moves}`;
+            elTime.classList.remove("invisible");
+            elRoundResult.textContent = "You win!!";
+        }
         elGameContainer.classList.add("invisible");
         elVictoryScreen.classList.remove("invisible");
-        elTime.textContent = `Latest Time: ${this.seconds} seconds`;
         elBestTime.textContent = `Best Time: ${this.bestTime} seconds`;
-        elNumberOfMoves.textContent = `Number of moves: ${this.moves}`;
         elTotalWins.textContent = `Total wins: ${this.wins}`;
+        elTotalLosses.textContent = `Total losses: ${this.losses}`;
+        if (this.wins === 0) {
+            elBestTime.classList.add("invisible");
+        } else {
+            elBestTime.classList.remove("invisible");
+        }
     },
 }
 

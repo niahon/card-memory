@@ -11,17 +11,24 @@
     <div id="game-container">
         <div id="extra-flex">
             <p id="timer">0s</p>
+            <select id="difficulty-selector">
+                <option value="Easy">Easy</option>
+                <option value="Normal">Normal</option>
+                <option value="Hard">Hard</option>
+            </select>
             <button id="start-button">Start Game</button>
         </div>
         <div id="card-grid"></div>
     </div>
 
     <div id="victory-screen" class="flex invisible">
-        <h1>You won!!</h1>
+        <h1 id="round-result"></h1>
         <h2 id="time"></h2>
         <h2 id="best-time"></h2>
         <h2 id="moves-number"></h2>
         <h2 id="total-wins"></h2>
+        <h2 id="moves-number"></h2>
+        <h2 id="total-losses"></h2>
         <button id="play-again">Play Again</button>
     </div>
 </body>
