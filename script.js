@@ -8,8 +8,10 @@ const elTimer = document.getElementById("timer");
 
 /* Victory screen elements */
 const elVictoryScreen = document.getElementById("victory-screen");
-const elTotalTime = document.getElementById("total-time");
-const elTotalMoves = document.getElementById("total-moves");
+const elTime = document.getElementById("time");
+const elBestTime = document.getElementById("best-time");
+const elNumberOfMoves = document.getElementById("moves-number");
+const elTotalWins = document.getElementById("total-wins");
 const elPlayAgain = document.getElementById("play-again");
 
 /* Variables for creating the card grid*/
@@ -76,6 +78,8 @@ let game = {
     points: 0,
     moves: 0,
     seconds: 0,
+    wins: 0,
+    bestTime: 0,
     setupGame() {
         console.log(this);
         elGameContainer.classList.remove("invisible");
@@ -103,7 +107,6 @@ let game = {
             this.seconds++;
             elTimer.textContent = `${this.seconds}s`;
             if (this.gameStart === false) {
-                console.log('puts');
                 clearInterval(timer);
             }
         }, 1000)
@@ -153,12 +156,22 @@ let game = {
             this.gameEnd();
         }
     },
+    updateBestTime() {
+        console.log("test");
+        if (this.bestTime === 0 || this.bestTime > this.seconds) {
+            this.bestTime = this.seconds;
+        }
+    },
     gameEnd() {
         this.gameStart = false;
+        this.updateBestTime();
+        this.wins++;
         elGameContainer.classList.add("invisible");
         elVictoryScreen.classList.remove("invisible");
-        elTotalTime.textContent = `Total time: ${this.seconds} seconds`;
-        elTotalMoves.textContent = `Total moves: ${this.moves}`;
+        elTime.textContent = `Latest Time: ${this.seconds} seconds`;
+        elBestTime.textContent = `Best Time: ${this.bestTime} seconds`;
+        elNumberOfMoves.textContent = `Number of moves: ${this.moves}`;
+        elTotalWins.textContent = `Total wins: ${this.wins}`;
     },
 }
 
