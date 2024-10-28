@@ -11,13 +11,13 @@ main {
 button {
     padding: 0.8rem 1rem;
     border: none;
-    background-color: blue;
+    background-color: white;
     border-radius: 5px;
-    color: white;
+    color: black;
 }
 
 body {
-    background-color: rgb(6, 88, 16);
+    background-color: rgb(15, 63, 20);
     background-image: url("img/suits\(3\).png");
 
     background-size: 25%;
@@ -26,7 +26,9 @@ body {
 #game-container {
     margin: 0 auto;
     width: 55%;
-    background-color: rgba(56, 8, 53, 0.9);
+    background-color: rgba(56, 8, 8, 0.9);
+    border: 2px solid white;
+    border-radius: 10px;
 }
     #extra-flex {
         display: flex;
@@ -66,7 +68,8 @@ body {
             }
 
 #victory-screen {
-    background-color: red;
+    background-color: rgba(56, 8, 8, 0.9);
+    color: white;
     width: 50%;
     margin: 4rem auto;
     border-radius: 1rem;

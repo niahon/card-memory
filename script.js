@@ -179,14 +179,14 @@ let game = {
         if (this.roundState === 'loss') {
             this.losses++;
             elTime.classList.add("invisible");
-            elRoundResult.textContent = "You lose...";
+            elRoundResult.textContent = "You lose";
         } else {
             this.wins++;
             this.updateBestTime();
             elTime.textContent = `Latest Time: ${this.totalTime} seconds`;
             elNumberOfMoves.textContent = `Number of moves: ${this.moves}`;
             elTime.classList.remove("invisible");
-            elRoundResult.textContent = "You win!!";
+            elRoundResult.textContent = "You win";
         }
         elGameContainer.classList.add("invisible");
         elVictoryScreen.classList.remove("invisible");
