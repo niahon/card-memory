@@ -4,5 +4,4 @@
 
 # TO DO  
 -Shuffle cards every replay
--Fix game not resetting properly in loss
 ## 

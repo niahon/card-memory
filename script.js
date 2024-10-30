@@ -39,6 +39,7 @@ const countOccurrences = (arr, val) =>
 
 window.addEventListener("load", createCards);
 function createCards() {
+    console.log("adding");
     let counter = 0;
     for (let col = 0; col < numberOfCards; col++) {
         for (let row = 0; row < numberOfCards; row++) {
@@ -99,10 +100,10 @@ let game = {
         game.totalTime = 0;
         game.maxTime = 60;
         elTimer.textContent = "Time: ";
-         game.difficulty = '';
+        game.difficulty = '';
         elDifficultySelector.value = 'Select Difficulty'; 
-        console.log(game.roundState);
-         console.log(game.difficulty); 
+        removeCards();
+        createCards();
     },
      changeDifficulty(e) {
         if (e.target.value === 'Select Difficulty') {
@@ -142,21 +143,21 @@ let game = {
             this.maxTime--;
             elTimer.textContent = `Time: ${this.maxTime}s`;
             if (this.maxTime === 0) {
-                console.log("YOU LOSE!");
                 this.roundState = "loss";
+                document.querySelectorAll(".card").forEach((el) => el.removeEventListener("click", this.cardClicked));
                 this.gameEnd(); 
             }
             if (this.gameStart === false) {
                 clearInterval(timer);
             }
         }, 1000)
-        elTimer
+        elTimer;
     },
     eventHandlers() {
-        let cardList = document.querySelectorAll(".card");
-        cardList.forEach((el) => el.addEventListener("click", this.cardClicked));
+        document.querySelectorAll(".card").forEach((el) => el.addEventListener("click", this.cardClicked));
     },
     cardClicked() {
+        console.log('kill me');
         let img = this.children[0];
         if (game.card1 !== "" && game.card2 !== "") {
             return;
