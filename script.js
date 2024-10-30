@@ -73,22 +73,22 @@ function incrementArray(arr) {
     }
 }
 
-// Handles all game functionality
+// Game functionality
 let game = {
     gameStart: false,
     card1: "",
     card2: "",
+    difficulty: '', 
     points: 0,
     moves: 0,
     wins: 0,
     losses: 0,
-    maxTime: 60,
+    maxTime: 2,
     totalTime: 0,
     bestTime: 0,
     roundState: '',
-    setupGame() {
-        console.log(this);
-        this.roundState = '';
+    resetGame() {
+        game.roundState = '';
         elGameContainer.classList.remove("invisible");
         elVictoryScreen.classList.add("invisible");
         for (let i = 0; i < elCardGrid.children.length; i++) {
@@ -97,12 +97,39 @@ let game = {
         game.points = 0;
         game.moves = 0;
         game.totalTime = 0;
-        elTimer.textContent = "0s";
+        game.maxTime = 60;
+        elTimer.textContent = "Time: ";
+         game.difficulty = '';
+        elDifficultySelector.value = 'Select Difficulty'; 
+        console.log(game.roundState);
+         console.log(game.difficulty); 
     },
-    startGame() {
-        if (game.gameStart === true) {
+     changeDifficulty(e) {
+        if (e.target.value === 'Select Difficulty') {
             return;
         }
+        game.difficulty = e.target.value;
+        game.setTimeLimit();
+    }, 
+     setTimeLimit() {
+        let time;
+        if (game.difficulty === 'Easy') {
+            time = 60;
+        } else if (game.difficulty === 'Normal') {
+            time = 45;
+        } else {
+            time = 2;
+        }
+        game.maxTime = time;
+        elTimer.textContent = `Time: ${time}s`;
+    }, 
+    startGame() {
+        console.log(game.difficulty);
+        if (game.gameStart === true || game.difficulty === '') {
+            console.log('got it');
+            return;
+        }
+        console.log(game.difficulty);
         game.gameStart = true;
         console.log(elCardGrid.children);
         console.log("Game Started!");
@@ -112,8 +139,9 @@ let game = {
     timeGame() {
         let timer = setInterval(() => {
             this.totalTime++;
-            elTimer.textContent = `${this.totalTime}s`;
-            if (this.totalTime >= this.maxTime) {
+            this.maxTime--;
+            elTimer.textContent = `Time: ${this.maxTime}s`;
+            if (this.maxTime === 0) {
                 console.log("YOU LOSE!");
                 this.roundState = "loss";
                 this.gameEnd(); 
@@ -169,7 +197,6 @@ let game = {
         }
     },
     updateBestTime() {
-        console.log("test");
         if (this.bestTime === 0 || this.bestTime > this.totalTime) {
             this.bestTime = this.totalTime;
         }
@@ -202,4 +229,5 @@ let game = {
 }
 
 elStartButton.addEventListener("click", game.startGame);
-elPlayAgain.addEventListener("click", game.setupGame);
+elPlayAgain.addEventListener("click", game.resetGame);
+elDifficultySelector.addEventListener("change", game.changeDifficulty);
