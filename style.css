@@ -1,9 +1,24 @@
 @import url("normalize.css");
 
+:root {
+    --text-emphasis: #bd0101;
+    --game-container-bg: #370000;
+    --game-container-top: rgba(168, 14, 14, 0.75);;
+    --accent: rgb(22, 76, 175);
+}
+
+html {
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: inherit;
+}
+
 main {
     margin: 2rem auto 0;
     width: 70%;
-    border: 2px solid black;
+    border: 3px solid black;
     border-radius: 1rem;
     padding: 0.5rem 1rem;
 }
@@ -11,22 +26,35 @@ main {
 button {
     padding: 0.8rem 1rem;
     border: none;
-    background-color: white;
     border-radius: 5px;
-    color: black;
+}
+    button:active {
+        background-color: rgb(255, 150, 150);
+    }
+
+a {
+    color: var(--accent);
 }
 
 body {
     background-color: rgb(15, 63, 20);
     background-image: url("img/suits\(3\).png");
-
     background-size: 25%;
+    backdrop-filter: blur(2px);
+    height: 100vh;
 }
+
+#index-container {
+    background-color: #f0f0f0;
+}
+    h1 {
+        color: var(--text-emphasis);
+    }
 
 #game-container {
     margin: 0 auto;
     width: 55%;
-    background-color: rgba(56, 8, 8, 0.9);
+    background-color: var(--game-container-bg);
     border: 2px solid white;
     border-radius: 10px;
 }
@@ -35,11 +63,16 @@ body {
         margin: 0.5rem 0;
         padding: 0.5rem 2rem;
         justify-content: space-between;
-        border-bottom: 2px solid blue;
+        background-color: var(--game-container-top);
     }
         #timer {
             color: white;
             font-size: 22px;
+            margin: 0;
+            align-self: center;
+        }
+        #difficulty-selector {
+            margin-right: 2rem;
         }
     #card-grid {
         display: grid;
@@ -49,8 +82,8 @@ body {
         padding: 1rem;
     }
         .card {
-            width: 80px;
-            height: 100px;
+            width: 110px;
+            height: 150px;
             border: 8px double red;
             background-color: white;
             display: flex;
@@ -58,6 +91,7 @@ body {
             align-items: center;
             font-size: 34px;
             padding: 0.5rem;
+            border-radius: 10px;
         }
         .card:hover {
             cursor: pointer;
