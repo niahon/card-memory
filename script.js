@@ -11,7 +11,9 @@ const elDifficultySelector = document.getElementById("difficulty-selector");
 const elVictoryScreen = document.getElementById("victory-screen");
 const elRoundResult = document.getElementById("round-result");
 const elTime = document.getElementById("time");
-const elBestTime = document.getElementById("best-time");
+const elBestTimeEasy = document.getElementById("best-time-easy");
+const elBestTimeNormal = document.getElementById("best-time-normal");
+const elBestTimeHard = document.getElementById("best-time-hard");
 const elNumberOfMoves = document.getElementById("moves-number");
 const elTotalWins = document.getElementById("total-wins");
 const elTotalLosses = document.getElementById("total-losses");
@@ -39,7 +41,6 @@ const countOccurrences = (arr, val) =>
 
 window.addEventListener("load", createCards);
 function createCards() {
-    console.log("adding");
     let counter = 0;
     for (let col = 0; col < numberOfCards; col++) {
         for (let row = 0; row < numberOfCards; row++) {
@@ -74,6 +75,16 @@ function incrementArray(arr) {
     }
 }
 
+function deleteCards() {
+    while(elCardGrid.firstChild) {
+        elCardGrid.removeChild(elCardGrid.lastChild);
+    }
+    numArr = [];
+    numSet = new Set();
+}
+
+
+
 // Game functionality
 let game = {
     gameStart: false,
@@ -86,9 +97,13 @@ let game = {
     losses: 0,
     maxTime: 2,
     totalTime: 0,
-    bestTime: 0,
+    bestTimeEasy: 0,
+    bestTimeNormal: 0,
+    bestTimeHard: 0,
     roundState: '',
     resetGame() {
+        deleteCards();
+        createCards();
         game.roundState = '';
         elGameContainer.classList.remove("invisible");
         elVictoryScreen.classList.add("invisible");
@@ -101,9 +116,7 @@ let game = {
         game.maxTime = 60;
         elTimer.textContent = "Time: ";
         game.difficulty = '';
-        elDifficultySelector.value = 'Select Difficulty'; 
-        removeCards();
-        createCards();
+        elDifficultySelector.value = 'Select Difficulty';
     },
      changeDifficulty(e) {
         if (e.target.value === 'Select Difficulty') {
@@ -125,15 +138,10 @@ let game = {
         elTimer.textContent = `Time: ${time}s`;
     }, 
     startGame() {
-        console.log(game.difficulty);
         if (game.gameStart === true || game.difficulty === '') {
-            console.log('got it');
             return;
         }
-        console.log(game.difficulty);
         game.gameStart = true;
-        console.log(elCardGrid.children);
-        console.log("Game Started!");
         game.timeGame();
         game.eventHandlers();
     },    
@@ -157,7 +165,6 @@ let game = {
         document.querySelectorAll(".card").forEach((el) => el.addEventListener("click", this.cardClicked));
     },
     cardClicked() {
-        console.log('kill me');
         let img = this.children[0];
         if (game.card1 !== "" && game.card2 !== "") {
             return;
@@ -198,8 +205,18 @@ let game = {
         }
     },
     updateBestTime() {
-        if (this.bestTime === 0 || this.bestTime > this.totalTime) {
-            this.bestTime = this.totalTime;
+        if (this.difficulty === 'Easy') {
+            if (this.bestTimeEasy === 0 || this.bestTimeEasy > this.totalTime) {
+                this.bestTimeEasy = this.totalTime;
+            }
+        } else if (this.difficulty === 'Normal') {
+            if (this.bestTimeNormal === 0 || this.bestTimeNormal > this.totalTime) {
+                this.bestTimeNormal = this.totalTime;
+            }
+        } else {
+            if (this.bestTimeHard === 0 || this.bestTimeHard > this.totalTime) {
+                this.bestTimeHard = this.totalTime;
+            }
         }
     },
     gameEnd() {
@@ -218,13 +235,19 @@ let game = {
         }
         elGameContainer.classList.add("invisible");
         elVictoryScreen.classList.remove("invisible");
-        elBestTime.textContent = `Best Time: ${this.bestTime} seconds`;
+        elBestTimeEasy.textContent = `Best Time (Easy): ${this.bestTimeEasy} seconds`;
+        elBestTimeNormal.textContent = `Best Time (Normal): ${this.bestTimeNormal} seconds`;
+        elBestTimeHard.textContent = `Best Time (Hard): ${this.bestTimeHard} seconds`;
         elTotalWins.textContent = `Total wins: ${this.wins}`;
         elTotalLosses.textContent = `Total losses: ${this.losses}`;
         if (this.wins === 0) {
-            elBestTime.classList.add("invisible");
+            elBestTimeEasy.classList.add("invisible");
+            elBestTimeNormal.classList.add("invisible");
+            elBestTimeHard.classList.add("invisible");
         } else {
-            elBestTime.classList.remove("invisible");
+            elBestTimeEasy.classList.remove("invisible");
+            elBestTimeNormal.classList.remove("invisible");
+            elBestTimeHard.classList.remove("invisible");
         }
     },
 }
