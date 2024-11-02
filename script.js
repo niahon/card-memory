@@ -130,9 +130,9 @@ let game = {
         if (game.difficulty === 'Easy') {
             time = 60;
         } else if (game.difficulty === 'Normal') {
-            time = 45;
+            time = 40;
         } else {
-            time = 2;
+            time = 25;
         }
         game.maxTime = time;
         elTimer.textContent = `Time: ${time}s`;
